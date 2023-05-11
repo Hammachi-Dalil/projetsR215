@@ -11,9 +11,12 @@ import PocketBase from 'pocketbase'
       <p></p>
       <label width="50px">Password : </label><input type="password" id="passwd">
       <p></p>
+      <label width="50px">recherche : </label><input type="password" id="titre">
+      <p></p>
       <hr>
       <button v-on:click="register()">Register</button>
       <button v-on:click="login()">Login</button><p></p>
+      <button v-on:click="reset_password()">Reset Password</button><p></p>
     </div>
   </header>
 
@@ -40,10 +43,22 @@ export default {
         passwordConfirm: document.getElementById("passwd").value,
         name: 'John Di',
       });
-    }
-    
+    },
+    async reset_password() {
+      await pb.collection('users').requestPasswordReset(document.getElementById("login").value);
+    },
+    async search() {
+      const result = await pb.collection('livre').getList(1, 1, {
+    filter: 'title =' + document.getElementById("titre").value,
+    document.getElementById("resultat").value=result
+    });
   }
 }
+
+// créer sur pocketbase la collection "livre" pour que la fonction search marche
+
+
+
 </script>
 <style scoped>
 
